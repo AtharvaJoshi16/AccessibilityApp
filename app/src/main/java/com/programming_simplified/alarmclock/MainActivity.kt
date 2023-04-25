@@ -41,7 +41,6 @@ class MainActivity : ComponentActivity() {
                     color = Color.White
                 ) {
                     HomeScreen()
-
                 }
             }
         }

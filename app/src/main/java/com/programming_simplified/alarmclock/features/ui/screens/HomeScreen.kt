@@ -17,6 +17,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -30,6 +34,7 @@ import com.programming_simplified.alarmclock.ui.theme.DarkPink
 import com.programming_simplified.alarmclock.ui.theme.Background
 import com.programming_simplified.alarmclock.ui.theme.LightPink
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -59,6 +64,9 @@ fun HomeScreen() {
         Scaffold(
             floatingActionButton = {
                 FloatingActionButton(
+                    modifier = Modifier.semantics {role = Role.Button;
+                        contentDescription = "Add a new alarm"
+                    }.padding(10.dp),
                     onClick = {
                         scope.launch {
                             sheetState.animateTo(
@@ -68,7 +76,7 @@ fun HomeScreen() {
                                 )
                             )
                         }
-                    }, backgroundColor = DarkPink, modifier = Modifier.padding(10.dp)
+                    }
                 ) {
                     Icon(
                         Icons.Rounded.Add, contentDescription = "", tint = Color.White
@@ -87,7 +95,6 @@ fun HomeScreen() {
                         .fillMaxSize()
                         .padding(15.dp)
                 ) {
-
                     item {
                         Box(
                             modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd
@@ -95,7 +102,7 @@ fun HomeScreen() {
                             CommonIconFromImageVector(
                                 icon = Icons.Rounded.MoreVert,
                                 tint = DarkPink,
-                                modifier = Modifier.padding(top = 13.dp)
+                                modifier = Modifier.padding(top = 13.dp).semantics { role = Role.Button ;contentDescription = "Menu" }
                             ) {}
                         }
                     }
@@ -111,8 +118,12 @@ fun HomeScreen() {
                             )
                         )
                     }
-                    items(3) {
-                        AlarmEachRow()
+                    items(7) {
+                        val rand = Random(System.nanoTime())
+                        var number = (0..23).random(rand)
+
+                        var number2 = (0..3).random(rand)
+                        AlarmEachRow(number,number2)
                     }
 
                 }

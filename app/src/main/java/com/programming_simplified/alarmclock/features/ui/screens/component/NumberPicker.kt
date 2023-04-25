@@ -19,6 +19,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
@@ -305,7 +307,7 @@ fun FullHoursNumberPicker(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         NumberPicker(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f).semantics { contentDescription = "Scroll vertically to set the hours" },
             label = {
                 "${if (leadingZero && abs(it) < 10) "0" else ""}$it"
             },
@@ -321,7 +323,7 @@ fun FullHoursNumberPicker(
         hoursDivider?.invoke()
 
         NumberPicker(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f).semantics { contentDescription = "Scroll vertically to set the minutes" },
             label = {
                 "${if (leadingZero && abs(it) < 10) "0" else ""}$it"
             },

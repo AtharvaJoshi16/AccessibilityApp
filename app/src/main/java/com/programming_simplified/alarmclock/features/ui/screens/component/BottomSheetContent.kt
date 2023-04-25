@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.*
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -65,7 +66,9 @@ fun BottomSheetContents(
                         .padding(start = 20.dp, end = 20.dp, top = 30.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    CommonIconFromImageVector(icon = Icons.Rounded.Close, tint = Color.Black) {
+                    CommonIconFromImageVector(icon = Icons.Rounded.Close, tint = Color.Black,
+                        modifier = Modifier.semantics { role = Role.Button ;contentDescription = "Close New Alarm Screen" }
+                        ) {
                         onCancel()
                     }
                     Text(
@@ -73,7 +76,9 @@ fun BottomSheetContents(
                             color = Color.Black, fontSize = 17.sp, fontWeight = FontWeight.SemiBold
                         )
                     )
-                    CommonIconFromImageVector(icon = Icons.Rounded.Check, tint = Color.Black) {
+                    CommonIconFromImageVector(icon = Icons.Rounded.Check, tint = Color.Black,
+                        modifier = Modifier.semantics {role = Role.Button; contentDescription = "Set Alarm" }
+                        ) {
                         onCheck()
                     }
                 }
@@ -86,7 +91,7 @@ fun BottomSheetContents(
                     contentAlignment = Center
                 ) {
                     Text(
-                        text = "Ring in 1 day",
+                        text = "Ring in 7h 50m",
                         style = TextStyle(
                             color = Color.DarkGray.copy(0.7f),
                             fontSize = 13.sp,
@@ -163,11 +168,11 @@ fun AlarmSetting() {
                 })
             SpacerHeight(15.dp)
 
-            SettingRow(title = stringResource(R.string.ringtone), des = "Holiday")
+            SettingRow(title = stringResource(R.string.ringtone), des = "Holiday", buttonDes = "Choose a Ringtone")
             SpacerHeight(10.dp)
             VibrateRow(selected = isVibrated, onSelected = { isVibrated = it })
             SpacerHeight(10.dp)
-            SettingRow(title = stringResource(R.string.snooze), des = "5 minutes,3 minutes")
+            SettingRow(title = stringResource(R.string.snooze), des = "5 minutes,3 minutes" , buttonDes = "Set the snooze duration")
 
         }
     }
@@ -176,11 +181,11 @@ fun AlarmSetting() {
 
 @Composable
 fun SettingRow(
-    title: String, des: String
+    title: String, des: String, buttonDes :String
 ) {
 
     Row(
-        modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+        modifier = Modifier.fillMaxWidth().semantics(mergeDescendants = true) {  }, horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Column {
             Text(
@@ -198,7 +203,8 @@ fun SettingRow(
             icon = Icons.Rounded.ArrowForwardIos,
             modifier = Modifier
                 .align(CenterVertically)
-                .size(16.dp),
+                .size(16.dp).semantics {role = Role.Button
+                    contentDescription = buttonDes },
             tint = DarkPink,
         ) {
 
@@ -213,14 +219,17 @@ fun VibrateRow(
 ) {
 
     Row(
-        modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+        modifier = Modifier.fillMaxWidth().semantics {
+               contentDescription = "Vibrate, " + if(selected) "Active" else "Inactive"
+        }, horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
             text = stringResource(R.string.vibrate), style = TextStyle(
                 fontSize = 15.sp, fontWeight = FontWeight.Normal, color = Color.Black
             ), modifier = Modifier.align(CenterVertically)
         )
-        CustomToggleButton(selected = selected, onUpdate = { onSelected(it) })
+        CustomToggleButton(modifier = Modifier.clearAndSetSemantics {role = Role.Switch;
+            stateDescription = if (selected) "Vibrate Active" else "Vibrate Inactive" }, selected = selected, onUpdate = { onSelected(it) })
     }
 
 }

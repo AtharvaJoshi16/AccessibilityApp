@@ -9,9 +9,14 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.invisibleToUser
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -67,7 +72,7 @@ fun CustomAlarmScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 weeks.forEachIndexed { index, week ->
-                    CustomWeekSelect(title = week.shortName, selected = selected.contains(index)) {
+                    CustomWeekSelect(title = week.shortName,desc = "${week.fullName},Day ${week.idx} of 7", selected = selected.contains(index)) {
                         selected = if (selected.contains(index)) {
                             selected.minus(index)
                         } else {
@@ -82,14 +87,16 @@ fun CustomAlarmScreen(
 
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CustomWeekSelect(
     title: Char,
+    desc: String,
     selected: Boolean,
     onClick: () -> Unit
 ) {
 
-    Card(elevation = 0.dp, shape = CircleShape, modifier = Modifier
+    Card(elevation = 0.dp, shape = CircleShape, modifier = Modifier.semantics { contentDescription = desc }
         .size(35.dp)
         .noRippleEffect {
             onClick()
@@ -102,10 +109,10 @@ fun CustomWeekSelect(
             Text(
                 text = title.toString(), style = TextStyle(
                     color = Color.Black,
-                    fontSize = 13.sp,
-                )
+                    fontSize = 13.sp
+                    )
+                , modifier = Modifier.clearAndSetSemantics { contentDescription = ""  }
             )
         }
     }
-
 }

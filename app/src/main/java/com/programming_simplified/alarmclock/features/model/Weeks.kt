@@ -1,29 +1,29 @@
 package com.programming_simplified.alarmclock.features.model
 
 data class Weeks(
-    val shortName: Char, val fullName: String
+    val shortName: Char, val idx : Int, val fullName: String
 )
 
 val listOfWeeks = listOf(
     Weeks(
-        'S', "Sun"
+        'S', 1,"Sunday"
     ),
     Weeks(
-        'M', "Mon"
+        'M', 2,"Monday"
     ),
     Weeks(
-        'T', "Tue"
+        'T',3, "Tuesday"
     ),
     Weeks(
-        'W', "Wed"
+        'W',4, "Wednesday"
     ),
     Weeks(
-        'T', "Thu"
+        'T', 5,"Thursday"
     ),
     Weeks(
-        'F', "Fri"
+        'F', 6,"Friday"
     ),
     Weeks(
-        'S', "Sat"
+        'S', 7 ,"Saturday"
     ),
 )
