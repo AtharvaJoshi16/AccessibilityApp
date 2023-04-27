@@ -97,6 +97,9 @@ fun BottomSheetContents(
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Normal
                         ),
+                        modifier = Modifier.clearAndSetSemantics {
+                            contentDescription = "Ring in 7 hours 50 minutes"
+                        }
                     )
                 }
                 SpacerHeight(15.dp)
